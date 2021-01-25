@@ -1,0 +1,71 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  email: String!
+  firstName: String
+  lastName: String
+  role: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  lastLogin: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Manager {
+  id: ID!
+  role: String!
+  user: User!
+}
+
+type Query {
+  manager(where: ManagerWhereUniqueInput!): Manager!
+  managers(where: ManagerWhereInput): [Manager!]!
+}
+
+input ManagerWhereUniqueInput {
+  id: ID!
+}
+
+input ManagerWhereInput {
+  id: ID
+  role: String
+}
+
+type Mutation {
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User!
+  createManager(data: ManagerCreateWithUserInput!): Manager!
+}
+
+input UserUpdateInput {
+  firstName: String
+  lastName: String
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+}
+
+input ManagerCreateWithUserInput {
+  manager: ManagerCreateInput!
+  user: UserCreateInput!
+}
+
+input ManagerCreateInput {
+  role: String!
+}
+
+input UserCreateInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}

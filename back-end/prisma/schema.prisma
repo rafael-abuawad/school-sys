@@ -21,7 +21,7 @@ model User {
   firstName     String
   lastName      String
   passwordHash  String
-  role          String
+  role          String?      @default("STUDENT")
   createdAt     DateTime?    @default(now())
   updatedAt     DateTime?    @default(now())
   lastLogin     DateTime?    @default(now())

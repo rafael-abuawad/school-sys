@@ -11,6 +11,19 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "paths": {}
+    "paths": {
+      "@app/shared": [
+        "libs/shared/src"
+      ],
+      "@app/shared/*": [
+        "libs/shared/src/*"
+      ],
+      "@app/models": [
+        "libs/models/src"
+      ],
+      "@app/models/*": [
+        "libs/models/src/*"
+      ]
+    }
   }
 }
