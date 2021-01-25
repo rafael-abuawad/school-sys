@@ -18,9 +18,20 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type JwtPayload {
+  user: User!
+  accessToken: String!
+}
+
 type Manager {
   id: ID!
   role: String!
+  user: User!
+}
+
+type Student {
+  id: ID!
+  birthDay: DateTime!
   user: User!
 }
 
@@ -36,6 +47,8 @@ type Query {
   managers(where: ManagerWhereInput): [Manager!]!
   teacher(where: TeacherWhereUniqueInput!): Teacher!
   teachers(where: TeacherWhereInput): [Teacher!]!
+  student(where: StudentWhereUniqueInput!): Student!
+  students(where: StudentWhereInput): [Student!]!
 }
 
 input ManagerWhereUniqueInput {
@@ -57,11 +70,27 @@ input TeacherWhereInput {
   birthDay: DateTime
 }
 
+input StudentWhereUniqueInput {
+  id: ID!
+}
+
+input StudentWhereInput {
+  id: ID
+  birthDay: DateTime
+}
+
 type Mutation {
+  login(data: UserLoginInput!): JwtPayload!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User!
   createManager(data: ManagerCreateWithUserInput!): Manager!
   createTeacher(data: TeacherCreateWithUserInput!): Teacher!
+  createStudent(data: StudentCreateWithUserInput!): Student!
+}
+
+input UserLoginInput {
+  email: String!
+  password: String!
 }
 
 input UserUpdateInput {
@@ -97,5 +126,14 @@ input TeacherCreateWithUserInput {
 
 input TeacherCreateInput {
   salary: Float!
+  birthDay: DateTime!
+}
+
+input StudentCreateWithUserInput {
+  student: StudentCreateInput!
+  user: UserCreateInput!
+}
+
+input StudentCreateInput {
   birthDay: DateTime!
 }

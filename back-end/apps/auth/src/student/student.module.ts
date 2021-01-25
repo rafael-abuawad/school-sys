@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { StudentService } from './student.service';
+import { PrismaService } from '@app/shared';
+import { StudentResolver } from './student.resolver';
 
 @Module({
-  providers: [StudentService],
+  providers: [PrismaService, StudentResolver],
 })
 export class StudentModule {}
