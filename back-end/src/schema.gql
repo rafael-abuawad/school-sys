@@ -43,21 +43,13 @@ type Teacher {
 }
 
 type Query {
-  manager(where: ManagerWhereUniqueInput!): Manager!
-  managers(where: ManagerWhereInput): [Manager!]!
+  managerProfile: Manager!
+  teacherProfile: Teacher!
   teacher(where: TeacherWhereUniqueInput!): Teacher!
   teachers(where: TeacherWhereInput): [Teacher!]!
+  studentProfile: Student!
   student(where: StudentWhereUniqueInput!): Student!
   students(where: StudentWhereInput): [Student!]!
-}
-
-input ManagerWhereUniqueInput {
-  id: ID!
-}
-
-input ManagerWhereInput {
-  id: ID
-  role: String
 }
 
 input TeacherWhereUniqueInput {

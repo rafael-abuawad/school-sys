@@ -1,3 +1,4 @@
+import { UseGuards, UnauthorizedException } from '@nestjs/common';
 import {
   Resolver,
   Query,
@@ -7,31 +8,29 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { Manager as PrismaManager } from '@prisma/client';
-import { PrismaService } from '@app/shared';
+import {
+  PrismaService,
+  GqlAuthGuard,
+  CurrentUser,
+  CurrentUserClass,
+} from '@app/shared';
 import { Manager, User } from '@app/models';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { ManagerCreateWithUserInput } from './input/manager-create-with-user.input';
 import { ManagerWhereUniqueInput } from './input/manager-where-unique.input';
-import { ManagerWhereInput } from './input/manager-where.input';
 
 @Resolver(_of => Manager)
 export class ManagerResolver {
   constructor(private readonly prisma: PrismaService) {}
 
-  @Query(_returns => Manager, { name: 'manager' })
-  manager(
-    @Args('where', { type: () => ManagerWhereUniqueInput })
-    where: ManagerWhereUniqueInput,
-  ) {
-    return this.prisma.manager.findUnique({ where });
-  }
-
-  @Query(_returns => [Manager], { name: 'managers' })
-  managers(
-    @Args('where', { type: () => ManagerWhereInput, nullable: true })
-    where: ManagerWhereInput,
-  ) {
-    return this.prisma.manager.findMany({ where });
+  @Query(_returns => Manager, { name: 'managerProfile' })
+  @UseGuards(GqlAuthGuard)
+  managerProfile(@CurrentUser() user: CurrentUserClass) {
+    if (user.role == 'MANAGER') {
+      const where = { id: user.id };
+      return this.prisma.user.findUnique({ where }).manager();
+    }
+    throw new UnauthorizedException("You aren't allowed to see this");
   }
 
   @ResolveField(_returns => User)
