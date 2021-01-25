@@ -24,9 +24,18 @@ type Manager {
   user: User!
 }
 
+type Teacher {
+  id: ID!
+  birthDay: DateTime!
+  salary: Float!
+  user: User!
+}
+
 type Query {
   manager(where: ManagerWhereUniqueInput!): Manager!
   managers(where: ManagerWhereInput): [Manager!]!
+  teacher(where: TeacherWhereUniqueInput!): Teacher!
+  teachers(where: TeacherWhereInput): [Teacher!]!
 }
 
 input ManagerWhereUniqueInput {
@@ -38,10 +47,21 @@ input ManagerWhereInput {
   role: String
 }
 
+input TeacherWhereUniqueInput {
+  id: ID!
+}
+
+input TeacherWhereInput {
+  id: ID
+  salary: Float
+  birthDay: DateTime
+}
+
 type Mutation {
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User!
   createManager(data: ManagerCreateWithUserInput!): Manager!
+  createTeacher(data: TeacherCreateWithUserInput!): Teacher!
 }
 
 input UserUpdateInput {
@@ -68,4 +88,14 @@ input UserCreateInput {
   firstName: String!
   lastName: String!
   password: String!
+}
+
+input TeacherCreateWithUserInput {
+  teacher: TeacherCreateInput!
+  user: UserCreateInput!
+}
+
+input TeacherCreateInput {
+  salary: Float!
+  birthDay: DateTime!
 }
