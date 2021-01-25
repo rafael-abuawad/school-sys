@@ -1,5 +1,5 @@
 # Academic web system
-A complete system (front-end + back-end) that enables **administrators to manage a academic institution** and lets **students manage their everyday tasks**. This repository contains the code for the back-end as well as the code for the front-end, this a **fullstack webapp** that haa many features.
+A complete system (front-end + back-end) that enables **administrators to manage a academic institution** and lets **students manage their everyday tasks**. This repository contains the code for the back-end as well as the code for the front-end, this a **fullstack webapp** that has many features.
 
 # Features
  - ## Classes, school years and homeworks
