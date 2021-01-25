@@ -42,9 +42,8 @@ export class TeacherResolver {
   @Mutation(_returns => Teacher, { name: 'createTeacher' })
   createTeacher(
     @Args('data', { type: () => TeacherCreateWithUserInput })
-    paramsData: TeacherCreateWithUserInput,
+    { user, teacher }: TeacherCreateWithUserInput,
   ) {
-    const { user, teacher } = paramsData;
     const saltRounds = 10;
     const salt = genSaltSync(saltRounds);
     const passwordHash = hashSync(user.password, salt);

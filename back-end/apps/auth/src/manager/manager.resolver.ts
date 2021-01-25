@@ -42,9 +42,8 @@ export class ManagerResolver {
   @Mutation(_returns => Manager, { name: 'createManager' })
   createManager(
     @Args('data', { type: () => ManagerCreateWithUserInput })
-    paramsData: ManagerCreateWithUserInput,
+    { user, manager }: ManagerCreateWithUserInput,
   ) {
-    const { user, manager } = paramsData;
     const saltRounds = 10;
     const salt = genSaltSync(saltRounds);
     const passwordHash = hashSync(user.password, salt);

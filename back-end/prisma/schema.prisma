@@ -62,7 +62,7 @@ model Student {
   courses   Course[]
   homeworks Homework[]
   exams     Exam[]
-  Report    Report[]
+  reports   Report[]
 }
 
 model Course {
