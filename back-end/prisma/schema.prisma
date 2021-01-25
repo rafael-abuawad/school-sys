@@ -6,3 +6,164 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model Institution {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime? @default(now())
+  users     User[]
+  courses   Course[]
+}
+
+model User {
+  id            String       @id @default(uuid())
+  email         String       @unique
+  firstName     String
+  lastName      String
+  passwordHash  String
+  role          String
+  createdAt     DateTime?    @default(now())
+  updatedAt     DateTime?    @default(now())
+  lastLogin     DateTime?    @default(now())
+  disabled      Boolean?     @default(false)
+  institution   Institution? @relation(fields: [institutionId], references: [id])
+  institutionId String?
+  manager       Manager?
+  teacher       Teacher?
+  student       Student?
+  lists         List[]
+  tasks         Task[]
+  documents     Document[]
+}
+
+model Manager {
+  id     String  @id @default(uuid())
+  role   String
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model Teacher {
+  id        String     @id @default(uuid())
+  salary    Float
+  birthDay  DateTime
+  user      User?      @relation(fields: [userId], references: [id])
+  userId    String?
+  courses   Course[]
+  homeworks Homework[]
+  exams     Exam[]
+}
+
+model Student {
+  id        String     @id @default(uuid())
+  birthDay  DateTime
+  user      User?      @relation(fields: [userId], references: [id])
+  userId    String?
+  courses   Course[]
+  homeworks Homework[]
+  exams     Exam[]
+  Report    Report[]
+}
+
+model Course {
+  id               String          @id @default(uuid())
+  title            String
+  description      String?
+  teacher          Teacher?        @relation(fields: [teacherId], references: [id])
+  teacherId        String?
+  students         Student[]
+  institution      Institution?    @relation(fields: [institutionId], references: [id])
+  institutionId    String?
+  academicPeriod   AcademicPeriod? @relation(fields: [academicPeriodId], references: [id])
+  academicPeriodId String?
+  startsAt         DateTime?       @default(now())
+  endsAt           DateTime
+  reports          Report[]
+  homeworks        Homework[]
+  exams            Exam[]
+}
+
+model Report {
+  id         String    @id @default(uuid())
+  course     Course?   @relation(fields: [courseId], references: [id])
+  courseId   String?
+  student    Student?  @relation(fields: [studentId], references: [id])
+  studentId  String?
+  totalScore Float
+  createdAt  DateTime? @default(now())
+}
+
+model AcademicPeriod {
+  id     String   @id @default(uuid())
+  title  String?
+  year   Int
+  Course Course[]
+}
+
+model List {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now())
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      String?
+  tasks       Task[]
+}
+
+model Task {
+  id        String    @id @default(uuid())
+  title     String
+  content   String?
+  isDone    Boolean   @default(false)
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+  user      User?     @relation(fields: [userId], references: [id])
+  userId    String?
+  list      List?     @relation(fields: [listId], references: [id])
+  listId    String?
+}
+
+model Homework {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  course      Course?   @relation(fields: [courseId], references: [id])
+  courseId    String?
+  student     Student?  @relation(fields: [studentId], references: [id])
+  studentId   String?
+  teacher     Teacher?  @relation(fields: [teacherId], references: [id])
+  teacherId   String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @default(now())
+  dueDate     DateTime
+  completed   Boolean?  @default(false)
+  score       Float?    @default(0.0)
+  document    Document?
+}
+
+model Document {
+  id         String    @id @default(uuid())
+  title      String
+  content    String
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @default(now())
+  user       User?     @relation(fields: [userId], references: [id])
+  userId     String?
+  homework   Homework? @relation(fields: [homeworkId], references: [id])
+  homeworkId String?
+}
+
+model Exam {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  course      Course?   @relation(fields: [courseId], references: [id])
+  courseId    String?
+  student     Student?  @relation(fields: [studentId], references: [id])
+  studentId   String?
+  teacher     Teacher?  @relation(fields: [teacherId], references: [id])
+  teacherId   String?
+  createdAt   DateTime? @default(now())
+  score       Float?    @default(0.0)
+}
